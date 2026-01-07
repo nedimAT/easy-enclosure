@@ -11,6 +11,9 @@
 # production
 /build
 
+# OpenJSCAD submodule (replaced with npm packages)
+/OpenJSCAD.org
+
 # misc
 .DS_Store
 .env.local
