@@ -46,10 +46,10 @@ const Accordian = ({children, title, active, onClick}: {children: React.ReactNod
 }
 
 export const ParamsForm = () => {
-  const { length, width, height, floor, roof, wall, cornerRadius, wallMountScrewDiameter, 
+  const { length, width, height, floor, roof, wall, cornerRadius, wallMountScrewDiameter,
     holes, pcbMounts, wallMounts, waterProof, lidScrews, lidScrewDiameter,
-    baseLidScrewDiameter, sealThickness, insertThickness, insertHeight, 
-    insertClearance  } = useParams()
+    baseLidScrewDiameter, sealThickness, insertThickness, insertHeight,
+    insertClearance, showDimensions  } = useParams()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement| HTMLSelectElement>, set: (v: number) => void) => {
     e.currentTarget.value && set(parseFloat(e.currentTarget.value))
@@ -103,6 +103,7 @@ export const ParamsForm = () => {
         <NumberInput label="Wall Thickness" value={wall.value} min={1} onChange={(e) => handleChange(e, wall.set)} />
         <NumberInput label="Lid Thickness" value={roof.value} min={1} onChange={(e) => handleChange(e, roof.set)} />
         <NumberInput label="Corner Radius" value={cornerRadius.value} min={1} onChange={(e) => handleChange(e, cornerRadius.set)} />
+        <CheckBox label="Show Dimensions" checked={showDimensions.value} onChange={(e) => showDimensions.set(e.currentTarget.checked)} />
       </Accordian>
 
       <Accordian title="Lid Insert" active={activeTab === 2} onClick={() => _setActiveTab(2)}>

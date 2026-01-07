@@ -13,8 +13,10 @@ import { base } from "../lib/enclosure/base"
 import { lid } from "../lib/enclosure/lid"
 import { waterProofSeal } from "../lib/enclosure/waterproofseal"
 import { pcbMounts } from "../lib/enclosure/pcbmount"
+import { calculateDimensions, DimensionPoint } from "../lib/enclosure/dimensions"
 
 import { useLoading } from "./LoadingIndicator"
+import { DimensionOverlay } from "./DimensionOverlay"
 
 import _ from 'lodash'
 
@@ -89,7 +91,8 @@ export const Renderer = () => {
   const animationFrame = useRef<number | null>(null)
   const unload = useRef<boolean>(false)
   const prevParams = useRef<string>('{}')
-  
+  const dimensions = useRef<DimensionPoint[]>([])
+
   const loading = useLoading()
   
   const moveHandler: PointerEventHandler = (ev) => {
@@ -240,6 +243,19 @@ export const Renderer = () => {
       }
     }
 
+    // Calculate dimension annotations
+    const allDimensions: DimensionPoint[] = []
+    if (_base.current) {
+      allDimensions.push(...calculateDimensions(params, 'base'))
+    }
+    if (_lid.current) {
+      allDimensions.push(...calculateDimensions(params, 'lid'))
+    }
+    if (_waterProofSeal.current && waterProof) {
+      allDimensions.push(...calculateDimensions(params, 'seal'))
+    }
+    dimensions.current = allDimensions
+
     // Combine solids
     let result: Geom3[] = []
     if (_lid.current) result.push(_lid.current)
@@ -293,12 +309,21 @@ export const Renderer = () => {
     }
   }, [params])
       
-  return <div 
-    id="jscad" 
-    ref={container}
-    onPointerMove={moveHandler}
-    onPointerDown={downHandler}
-    onPointerUp={upHandler}
-    onWheel={wheelHandler} 
-  />
+  return (
+    <>
+      <div
+        id="jscad"
+        ref={container}
+        onPointerMove={moveHandler}
+        onPointerDown={downHandler}
+        onPointerUp={upHandler}
+        onWheel={wheelHandler}
+      />
+      <DimensionOverlay
+        camera={camera}
+        dimensions={dimensions.current}
+        visible={params.showDimensions.value}
+      />
+    </>
+  )
 };

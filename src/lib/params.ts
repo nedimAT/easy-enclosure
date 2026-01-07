@@ -59,6 +59,7 @@ export type Params = {
   insertClearance: number,
   showLid: boolean,
   showBase: boolean,
+  showDimensions: boolean,
   cornerRadius: number,
   holes: Hole[],
   pcbMounts: PCBMount[],
@@ -83,6 +84,7 @@ const defaults: Params = {
   insertClearance: 0.04,
   showLid: true,
   showBase: true,
+  showDimensions: true,
   cornerRadius: 3,
   holes: [
     {
