@@ -1,4 +1,4 @@
-import { PointerEventHandler, WheelEventHandler, useEffect, useRef } from "react"
+import { PointerEventHandler, WheelEventHandler, useCallback, useEffect, useRef } from "react"
 import { prepareRender, entitiesFromSolids, drawCommands, cameras, controls } from "@jscad/regl-renderer"
 import { union } from "@jscad/modeling/src/operations/booleans"
 import { translate } from "@jscad/modeling/src/operations/transforms"
@@ -15,7 +15,7 @@ import { waterProofSeal } from "../lib/enclosure/waterproofseal"
 import { pcbMounts } from "../lib/enclosure/pcbmount"
 import { calculateDimensions, DimensionPoint } from "../lib/enclosure/dimensions"
 
-import { useLoading } from "./LoadingIndicator"
+import { useLoading } from "./useLoading"
 import { DimensionOverlay } from "./DimensionOverlay"
 
 import _ from 'lodash'
@@ -47,7 +47,7 @@ const baseDeps = ['length', 'width', 'height', 'wall', 'floor', 'cornerRadius', 
 const sealDeps = ['length', 'width', 'wall', 'cornerRadius', 'waterProof', 'sealThickness', 'insertClearance', 'insertThickness', 'lidScrewDiameter', 'baseLidScrewDiameter', 'lidScrews']
 const mountDeps = ['pcbMounts', 'waterProof', 'wall', 'floor', 'height']
 
-type Render = (options: any) => void;
+type Render = (options: RenderOptions) => void;
 
 type RenderOptions = {
   camera: typeof camera,
@@ -138,7 +138,7 @@ export const Renderer = () => {
       updateView = true
       rotateDelta = [0, 0]
     }
-    
+
     if (panDelta[0] || panDelta[1]) {
       const updated = orbitControls.pan({ controls:control, camera:camera, speed: panSpeed }, panDelta)
       control = { ...control, ...updated.controls }
@@ -147,14 +147,14 @@ export const Renderer = () => {
       camera.target = updated.camera.target
       updateView = true
     }
-    
+
     if (zoomDelta) {
       const updated = orbitControls.zoom({ controls:control, camera:camera, speed: zoomSpeed }, zoomDelta)
       control = { ...control, ...updated.controls }
       zoomDelta = 0
       updateView = true
     }
-    
+
     if (zoomToFit) {
       if (!renderOptions.current?.entities) return
       control.zoomToFit.tightness = 1
@@ -164,21 +164,25 @@ export const Renderer = () => {
       updateView = true
     }
   }
-  
-  const updateAndRender = (timestamp?: number) => {
+
+  const updateAndRender = () => {
     doRotatePanZoom()
-    
+
     if (updateView) {
       const updates = orbitControls.update({ controls: control, camera: camera })
+
       control = { ...control, ...updates.controls }
+
       updateView = control.changed // for elasticity in rotate / zoom
-      
+
       camera.position = updates.camera.position
       perspectiveCamera.update(camera)
-      
-      renderer.current && renderer.current(renderOptions.current)
+
+      if (renderer.current && renderOptions.current) {
+        renderer.current(renderOptions.current)
+      }
     }
-    
+
     if (!unload.current)
     animationFrame.current = requestAnimationFrame(updateAndRender)
   }
@@ -190,7 +194,7 @@ export const Renderer = () => {
     })
   }
   
-  const renderModel = async (params: Params, diff: string[]) => {
+  const renderModel = useCallback(async (params: Params, diff: string[]) => {
 
     let lidPos: Vec3
     let basePos: Vec3
@@ -282,7 +286,8 @@ export const Renderer = () => {
       renderOptions.current.entities = entitiesFromSolids({}, model.current)
       updateView = true
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
     
   useEffect(() => {
     const _params = params.get({ noproxy: true }) as Params
@@ -307,7 +312,7 @@ export const Renderer = () => {
         })
       }, 250)
     }
-  }, [params])
+  }, [params, renderModel, loading])
       
   return (
     <>
