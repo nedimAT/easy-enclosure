@@ -14,7 +14,7 @@ export const holes = (
   const { length, width, height, wall,
     insertThickness, insertClearance, holes: holeParams } = params
  
-  let result: Geom3[] = []
+  const result: Geom3[] = []
   SURFACES.forEach((surface) => {
     const surfaceHoles = holeParams.filter((spec) => {
       if (surfacesFilter.includes(surface) && spec.surface === surface) {
@@ -24,7 +24,7 @@ export const holes = (
       }
     })
 
-    surfaceHoles.forEach((hole, i) => {
+    surfaceHoles.forEach((hole) => {
       let x: number
       let y: number
       let z: number
