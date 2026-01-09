@@ -165,7 +165,7 @@ export const Renderer = () => {
     }
   }
   
-  const updateAndRender = (timestamp?: Number) => {
+  const updateAndRender = (timestamp?: number) => {
     doRotatePanZoom()
     
     if (updateView) {
@@ -257,7 +257,7 @@ export const Renderer = () => {
     dimensions.current = allDimensions
 
     // Combine solids
-    let result: Geom3[] = []
+    const result: Geom3[] = []
     if (_lid.current) result.push(_lid.current)
     if (_base.current) result.push(_base.current)
     if (_waterProofSeal.current && waterProof) result.push(_waterProofSeal.current)
