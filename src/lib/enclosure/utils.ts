@@ -1,4 +1,4 @@
-import { cube, cuboid, cylinder } from '@jscad/modeling/src/primitives'
+import { cuboid, cylinder } from '@jscad/modeling/src/primitives'
 import { rotateZ, translate } from '@jscad/modeling/src/operations/transforms'
 import { hull } from '@jscad/modeling/src/operations/hulls'
 import { subtract } from '@jscad/modeling/src/operations/booleans'
@@ -67,4 +67,3 @@ export const cloverFrame = (l: number, w: number, h: number, t: number, r=8, s=1
   const inner = clover(l-(t*2), w-(t*2), h, r, s)
   return subtract(outer, translate([t, t, 0], inner))
 }
-
