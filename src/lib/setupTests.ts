@@ -3,7 +3,7 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom'
-import { expect, afterEach, vi } from 'vitest'
+import { afterEach, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
 
 // Cleanup after each test
@@ -20,7 +20,7 @@ HTMLCanvasElement.prototype.getContext = vi.fn(() => ({
   stroke: vi.fn(), translate: vi.fn(), scale: vi.fn(), rotate: vi.fn(),
   arc: vi.fn(), fill: vi.fn(), measureText: vi.fn(() => ({ width: 0 })),
   transform: vi.fn(), rect: vi.fn(), clip: vi.fn()
-})) as any
+})) as unknown as typeof HTMLCanvasElement.prototype.getContext
 
 // Mock ResizeObserver
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
