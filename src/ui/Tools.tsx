@@ -59,7 +59,7 @@ export const Tools = () => {
     if (!e.target.files) return;
     const fileReader = new FileReader();
     fileReader.readAsText(e.target.files[0], "UTF-8");
-    fileReader.onload = e => {
+    fileReader.onload = () => {
       const data = JSON.parse(fileReader.result as string)
       params.set(data);
     };
