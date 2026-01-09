@@ -177,7 +177,9 @@ export const ParamsForm = () => {
       <Accordian title="Waterproofing" active={activeTab === 5} onClick={() => _setActiveTab(5)}>
         <CheckBox label="Waterproof" checked={waterProof.value} onChange={(e) => {
           waterProof.set(e.currentTarget.checked)
-          e.currentTarget.checked && lidScrews.set(true)
+          if (e.currentTarget.checked) {
+            lidScrews.set(true)
+          }
         }} />
         {
           waterProof.value &&
@@ -188,7 +190,9 @@ export const ParamsForm = () => {
       <Accordian title="Lid Screws" active={activeTab === 6} onClick={() => _setActiveTab(6)}>
         <CheckBox label="Include Lid Screws" checked={lidScrews.value} onChange={(e) => {
           lidScrews.set(e.currentTarget.checked)
-          !e.currentTarget.checked && waterProof.set(false)
+          if (!e.currentTarget.checked) {
+            waterProof.set(false)
+          }
         }} />
         <br/>
         {
