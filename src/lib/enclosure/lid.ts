@@ -18,7 +18,7 @@ export const lid = (params: Params) => {
   entities.push(roundedCube(width, length, roof, cornerRadius))
 
   if (params.lidScrews) {
-    let diameterMax = Math.max(baseLidScrewDiameter, lidScrewDiameter)
+    const diameterMax = Math.max(baseLidScrewDiameter, lidScrewDiameter)
     entities.push(
       translate([
         wall+insertClearance, 
@@ -33,7 +33,7 @@ export const lid = (params: Params) => {
           (diameterMax / 2) + (cornerRadius / 4) + (wall / 2)
       ))
     )
-    let screwOffset = (diameterMax / 2) + (cornerRadius / 4) + (wall / 2);
+    const screwOffset = (diameterMax / 2) + (cornerRadius / 4) + (wall / 2);
     subtracts.push(screws(length, width, roof*2, screwOffset, lidScrewDiameter))
   } else {
     entities.push(
@@ -52,7 +52,7 @@ export const lid = (params: Params) => {
     )
   }
 
-  const holeCount = params.holes.filter((v, i) => {return v.surface === 'top'}).length
+  const holeCount = params.holes.filter((v) => {return v.surface === 'top'}).length
 
   if (holeCount > 0) {
     subtracts.push(holes(params, ['top']))
