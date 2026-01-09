@@ -5,6 +5,9 @@
 
 /build
 
+# Vite
+*.local
+
 # Created by https://www.toptal.com/developers/gitignore/api/webstorm+all,macos,node,dotenv
 # Edit at https://www.toptal.com/developers/gitignore?templates=webstorm+all,macos,node,dotenv
 
