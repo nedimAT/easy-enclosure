@@ -8,7 +8,7 @@ export const waterProofSealCutout = (params: Params) => {
   const { length, width, height, wall, insertThickness, insertHeight,
     sealThickness, insertClearance, cornerRadius, baseLidScrewDiameter, lidScrewDiameter } = params
 
-  let diameterMax = Math.max(baseLidScrewDiameter, lidScrewDiameter)
+  const diameterMax = Math.max(baseLidScrewDiameter, lidScrewDiameter)
   return translate(
     [
       wall, 
@@ -27,7 +27,7 @@ export const waterProofSealCutout = (params: Params) => {
 
 export const waterProofSeal = (params: Params) => {
   const { length, width, wall, baseLidScrewDiameter, sealThickness, insertThickness, insertClearance, cornerRadius, lidScrewDiameter } = params
-  let diameterMax = Math.max(baseLidScrewDiameter, lidScrewDiameter)
+  const diameterMax = Math.max(baseLidScrewDiameter, lidScrewDiameter)
   return cloverFrame(
     width-(wall*2)-(insertClearance*2), 
     length-(wall*2)-(insertClearance*2), 
