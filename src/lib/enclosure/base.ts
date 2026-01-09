@@ -22,7 +22,7 @@ export const base = (params: Params) => {
   }
 
   if (params.lidScrews) {
-    let diameterMax = Math.max(baseLidScrewDiameter, lidScrewDiameter)
+    const diameterMax = Math.max(baseLidScrewDiameter, lidScrewDiameter)
     body.push(subtract(
       roundedCube(width, length, height, cornerRadius),
       translate([
@@ -35,7 +35,7 @@ export const base = (params: Params) => {
           (diameterMax / 2) + (cornerRadius / 4) + (wall / 2),
       ))
     ))
-    let screwOffset = (diameterMax / 2) + (cornerRadius / 4) + (wall / 2);
+    const screwOffset = (diameterMax / 2) + (cornerRadius / 4) + (wall / 2);
     subtracts.push(screws(length, width, height, screwOffset, baseLidScrewDiameter))
   } else {
     body.push(hollowRoundCube(width, length, height, _wall, cornerRadius))
@@ -49,7 +49,7 @@ export const base = (params: Params) => {
     subtracts.push(waterProofSealCutout(params))
   }
 
-  const holeCount = params.holes.filter((v, i) => {return ['front', 'back', 'left', 'right', 'bottom'].includes(v.surface)}).length
+  const holeCount = params.holes.filter((v) => {return ['front', 'back', 'left', 'right', 'bottom'].includes(v.surface)}).length
 
   if (holeCount > 0) {
     subtracts.push(holes(params))
