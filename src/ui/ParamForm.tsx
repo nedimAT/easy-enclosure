@@ -52,7 +52,9 @@ export const ParamsForm = () => {
     insertClearance, showDimensions  } = useParams()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement| HTMLSelectElement>, set: (v: number) => void) => {
-    e.currentTarget.value && set(parseFloat(e.currentTarget.value))
+    if (e.currentTarget.value) {
+      set(parseFloat(e.currentTarget.value))
+    }
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
